@@ -17,13 +17,13 @@ namespace CoffeeMachine.API.Controllers
 
         [HttpGet]
         public IActionResult BrewCoffee()
-        {
-            _coffeeService.UpdateCoffeeCount();
-
+        {            
             if (_coffeeService.PreparedTime.Month == 4 && _coffeeService.PreparedTime.Day == 1)
             {
                 return StatusCode(StatusCodes.Status418ImATeapot);
             }
+
+            _coffeeService.UpdateCoffeeCount();
 
             if (_coffeeService.CoffeeCount % 5 == 0)
             {
