@@ -4,11 +4,12 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using CoffeeMachine.API.Interfaces;
 using Moq;
+using CoffeeMachine.API.Models;
 
 namespace CoffeeMachine.API.Test
 {
     [TestFixture]
-    public class BrewCoffeeControllerTests
+    public class BrewCoffeeUnitTests
     {
 
         private BrewCoffeeController coffeeController;
@@ -27,6 +28,11 @@ namespace CoffeeMachine.API.Test
             // Arrange
             mockCofffeService.SetupGet(x => x.CoffeeCount).Returns(1);
             mockCofffeService.SetupGet(x => x.PreparedTime).Returns(new DateTime(2023, 02, 13, 11, 56, 24));
+            mockCofffeService.Setup(x => x.GetCoffee()).Returns(new BrewCoffeeResponse
+            {
+                message = "Your piping hot coffee is ready",
+                prepared = new DateTime(2023, 02, 13, 11, 56, 24).ToString("yyyy-MM-ddTHH:mm:sszz00")
+            });
 
             // Act
             var result = coffeeController.BrewCoffee() as OkObjectResult;

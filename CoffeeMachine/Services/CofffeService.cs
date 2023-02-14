@@ -1,4 +1,5 @@
 ﻿using CoffeeMachine.API.Interfaces;
+using CoffeeMachine.API.Models;
 
 namespace CoffeeMachine.API.Services
 {
@@ -11,6 +12,17 @@ namespace CoffeeMachine.API.Services
         {
             CoffeeCount++;
             PreparedTime = DateTime.Now;
-        }        
+        }
+
+       public BrewCoffeeResponse GetCoffee()
+       {
+            BrewCoffeeResponse brewCoffeeResponse = new()
+            {
+                message = "Your piping hot coffee is ready",
+                prepared = PreparedTime.ToString("yyyy-MM-ddTHH:mm:sszz00")
+            };
+            
+            return brewCoffeeResponse;
+        }
     }
 }

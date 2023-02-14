@@ -1,4 +1,6 @@
 ﻿using CoffeeMachine.API.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeeMachine.API.Controllers
@@ -16,8 +18,9 @@ namespace CoffeeMachine.API.Controllers
 
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult BrewCoffee()
-        {       
+        {
             _coffeeService.UpdateCoffeeCount();
 
             if (_coffeeService.PreparedTime.Month == 4 && _coffeeService.PreparedTime.Day == 1)
@@ -29,14 +32,9 @@ namespace CoffeeMachine.API.Controllers
             {
                 return StatusCode(StatusCodes.Status503ServiceUnavailable);
             }
-
-            var response = new
-            {
-                message = "Your piping hot coffee is ready",
-                prepared = _coffeeService.PreparedTime.ToString("yyyy-MM-ddTHH:mm:sszz00")
-            };
-
-            return Ok(response);
-        }
+            
+            return Ok(_coffeeService.GetCoffee());
+            
+        }        
     }
 }
